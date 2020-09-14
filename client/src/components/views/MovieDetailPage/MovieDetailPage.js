@@ -4,19 +4,25 @@ import { API_KEY, API_URL, IMAGE_URL } from '../../Config'
 import MainImage from '../LandingPage/Sections/MainImage'
 import GridCard from '../LandingPage/Sections/GridCard'
 import Favourite from './Sections/Favourite'
+import Comments from './Sections/Comments'
+import LikeDislikes from './Sections/LikeDislikes'
+import axios from 'axios'
 
 function MovieDetailPage(props) {
 
     const [Movie, setMovie] = useState([])
     const [Crews, setCrews] = useState([])
     const [ActorToggle, setActorToggle] = useState(false)
+    const [CommentLists, setCommentLists] = useState([])
     const movieId = props.match.params.movieId
 
+    const movieVariable = {
+        movieId: movieId
+    }
 
     useEffect(() => {
 
         const url = `${API_URL}movie/${movieId}?api_key=${API_KEY}&language=en-US`
-        // console.log(url)
         fetch(url)
             .then(response => response.json())
             .then(response => {
@@ -33,11 +39,28 @@ function MovieDetailPage(props) {
             }).catch(err => {
                 console.log(err)
             })
+
+        axios.post('/api/comment/getComments', movieVariable)
+            .then(response => {
+                console.log(response)
+                if (response.data.success) {
+                    console.log('response.data.comments', response.data.comments)
+                    setCommentLists(response.data.comments)
+                } else {
+                    alert('Failed to get comments Info')
+                }
+            })
+
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     const handleClick = () => {
         setActorToggle(!ActorToggle)
     }
+
+    const updateComment = (newComment) => {
+        setCommentLists(CommentLists.concat(newComment))
+    }
+
     return (
         <div>
             {Movie && <MainImage 
@@ -82,17 +105,24 @@ function MovieDetailPage(props) {
                                     name = {crew.name}
                                     character = {crew.character}
                                     />
-                                }
-                                
+                                }              
                             </React.Fragment>
                         ))}
                     </Row>
                 }
-                
+
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <LikeDislikes movie movieId={movieId} userId={localStorage.getItem('userId')} />
+                </div>
+
+                {/* Comments */}
+                <Comments 
+                    movieTitle={Movie.original_title} 
+                    CommentLists={CommentLists} 
+                    movieId={movieId} 
+                    refreshFunction={updateComment} />
 
             </div>
-
-
         </div>
     )
 }
