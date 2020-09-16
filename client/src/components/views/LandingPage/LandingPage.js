@@ -1,27 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { API_KEY, API_URL, IMAGE_URL } from '../../Config'
-import { Typography, Row, Modal } from 'antd'
+import { Typography, Row } from 'antd'
 import MainImage from './Sections/MainImage';
 import GridCard from './Sections/GridCard'
-import { withRouter } from 'react-router-dom';
 const { Title } = Typography
 
-function LandingPage(props) {
+function LandingPage() {
 
     const [Movies, setMovies] = useState([])
     const [currentPage, setCurrentPage] = useState(0)
 
-    const fetchType = () => {
-        let fetchByTypeId = props.fetchTypeId
-        if(Object.keys(props.match.params).length !== 0) {
-            fetchByTypeId = props.match.params.type
-        }
-        return fetchByTypeId
-     }
-
     useEffect(() => {
-        const fetchByTypeId = fetchType()
-        const endPoint = `${API_URL}movie/${fetchByTypeId}?api_key=${API_KEY}&language=en-US&page=1`
+        const endPoint = `${API_URL}movie/top_rated?api_key=${API_KEY}&language=en-US&page=1`
         fetchMovies(endPoint)
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -39,8 +29,7 @@ function LandingPage(props) {
             })
     }
     const handleClick = () => {
-        const fetchByTypeId = fetchType()
-        const endPoint = `${API_URL}movie/${fetchByTypeId}?api_key=${API_KEY}&language=en-US&page=${currentPage + 1}`
+        const endPoint = `${API_URL}movie/top_rated?api_key=${API_KEY}&language=en-US&page=${currentPage + 1}`
         fetchMovies(endPoint)
     }
     return (
@@ -55,7 +44,7 @@ function LandingPage(props) {
             }
             
                     <div style={{width: '85%', margin: '1rem auto'}}>
-                    <Title level={2}>Movies By {props.match.params.type ? props.match.params.type : props.fetchTypeId}</Title>
+                    <Title level={2}>Movies By latest</Title>
                     <hr />
 
                     <Row gutter={[16,16]}>
@@ -78,4 +67,4 @@ function LandingPage(props) {
     )
 }
 
-export default withRouter(LandingPage) 
+export default LandingPage
