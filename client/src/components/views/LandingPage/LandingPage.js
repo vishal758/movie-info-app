@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { Typography, Row, Button } from 'antd';
-import { API_URL, API_KEY, IMAGE_BASE_URL, IMAGE_SIZE, POSTER_SIZE, IMAGE_URL } from '../../Config'
+import { Typography, Row } from 'antd';
+import { API_URL, API_KEY, IMAGE_URL } from '../../Config'
 import MainImage from './Sections/MainImage'
 import GridCard from '../../views/LandingPage/Sections/GridCard'
 import { withRouter } from 'react-router-dom';
@@ -15,12 +15,10 @@ function LandingPage(props) {
     let sortBy = "top_rated"
 
     const sortMovieBy = () => {
-        console.log("landing page props", props)
-        console.log("landing page1 ", sortBy)
+
         if(Object.keys(props.match.params).length !== 0) {
             sortBy = props.match.params.type
         }
-        console.log("landing page 2", sortBy)
         return sortBy
     }
 

@@ -117,13 +117,13 @@ function MovieDetailPage(props) {
                 <br />
 
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <LikeDislikes video videoId={movieId} userId={localStorage.getItem('userId')} />
+                    <LikeDislikes movie movieId={movieId} userId={localStorage.getItem('userId')} />
                 </div>
 
                 <br />
                     <Recommendation movieId = {movieId} />
                 <br />
-                <Comments movieTitle={Movie.original_title} CommentLists={CommentLists} postId={movieId} refreshFunction={updateComment} />
+                <Comments movieTitle={Movie.original_title} CommentLists={CommentLists} movieId={movieId} refreshFunction={updateComment} />
 
             </div>
 
