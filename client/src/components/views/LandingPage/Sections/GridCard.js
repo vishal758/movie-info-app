@@ -7,7 +7,7 @@ function GridCard(props) {
     if(props.actor) {
         return (
             
-            <Col lg={4} md={8} xs={24}>
+            <Col lg={6} md={8} xs={24}>
                 <div style={{position: 'relative'}}>
                         <img style={{width: '100%', height: '320px'}} alt="" src={props.image} />
                         <div style= {{ position: 'absolute', maxWidth: '400px', bottom: '1rem', marginLeft: '2rem' }}>

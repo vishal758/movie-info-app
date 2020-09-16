@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { API_KEY, API_URL, IMAGE_URL } from '../../Config'
-import { Typography, Row } from 'antd'
+import { Typography, Row, Modal } from 'antd'
 import MainImage from './Sections/MainImage';
 import GridCard from './Sections/GridCard'
 import { withRouter } from 'react-router-dom';

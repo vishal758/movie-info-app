@@ -17,7 +17,6 @@ function LeftMenu(props) {
       <Menu.Item key="top_rated"><a href="/by/top_rated">Top Rated</a></Menu.Item>
       <Menu.Item key="upcoming"><a href="/by/upcoming">Upcoming</a></Menu.Item>
       <Menu.Item key="popular"><a href="/by/popular">Popular</a></Menu.Item>
-      <Menu.Item key="now_playing"><a href="/by/now_playing">Now Playing</a></Menu.Item>
     </SubMenu>
     {/* <SubMenu title={<span>Blogs</span>}>
       <MenuItemGroup title="Item 1">

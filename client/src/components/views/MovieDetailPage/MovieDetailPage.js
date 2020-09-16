@@ -7,7 +7,6 @@ import Favourite from './Sections/Favourite'
 import Comments from './Sections/Comments'
 import LikeDislikes from './Sections/LikeDislikes'
 import axios from 'axios'
-import Recommendation from '../LandingPage/Recommendation'
 
 function MovieDetailPage(props) {
 
@@ -111,7 +110,7 @@ function MovieDetailPage(props) {
                         ))}
                     </Row>
                 }
-                
+
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <LikeDislikes movie movieId={movieId} userId={localStorage.getItem('userId')} />
                 </div>
@@ -123,7 +122,6 @@ function MovieDetailPage(props) {
                     movieId={movieId} 
                     refreshFunction={updateComment} />
 
-                <Recommendation movieId = {movieId}/>
             </div>
         </div>
     )
