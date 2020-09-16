@@ -9,6 +9,7 @@ import GridCards from '../../views/LandingPage/Sections/GridCard';
 import MainImage from '../../views/LandingPage/Sections/MainImage';
 import MovieInfo from './Sections/MovieInfo';
 import Favorite from './Sections/Favourite';
+import Recommendation from '../Recommendations/Recommendation';
 function MovieDetailPage(props) {
 
     const movieId = props.match.params.movieId
@@ -119,6 +120,9 @@ function MovieDetailPage(props) {
                     <LikeDislikes video videoId={movieId} userId={localStorage.getItem('userId')} />
                 </div>
 
+                <br />
+                    <Recommendation movieId = {movieId} />
+                <br />
                 <Comments movieTitle={Movie.original_title} CommentLists={CommentLists} postId={movieId} refreshFunction={updateComment} />
 
             </div>
