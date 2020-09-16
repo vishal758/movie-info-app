@@ -3,17 +3,30 @@ import { Typography, Row, Button } from 'antd';
 import { API_URL, API_KEY, IMAGE_BASE_URL, IMAGE_SIZE, POSTER_SIZE, IMAGE_URL } from '../../Config'
 import MainImage from './Sections/MainImage'
 import GridCard from '../../views/LandingPage/Sections/GridCard'
+import { withRouter } from 'react-router-dom';
 const { Title } = Typography;
-function LandingPage() {
+function LandingPage(props) {
     const buttonRef = useRef(null);
 
     const [Movies, setMovies] = useState([])
     const [MainMovieImage, setMainMovieImage] = useState(null)
     const [Loading, setLoading] = useState(true)
     const [CurrentPage, setCurrentPage] = useState(0)
+    let sortBy = "top_rated"
+
+    const sortMovieBy = () => {
+        console.log("landing page props", props)
+        console.log("landing page1 ", sortBy)
+        if(Object.keys(props.match.params).length !== 0) {
+            sortBy = props.match.params.type
+        }
+        console.log("landing page 2", sortBy)
+        return sortBy
+    }
 
     useEffect(() => {
-        const endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
+        const sortBy = sortMovieBy()
+        const endpoint = `${API_URL}movie/${sortBy}?api_key=${API_KEY}&language=en-US&page=1`;
         fetchMovies(endpoint)
     }, [])
 
@@ -37,8 +50,9 @@ function LandingPage() {
     const loadMoreItems = () => {
         let endpoint = '';
         setLoading(true)
+        const sortBy = sortMovieBy()
         console.log('CurrentPage', CurrentPage)
-        endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=${CurrentPage + 1}`;
+        endpoint = `${API_URL}movie/${sortBy}?api_key=${API_KEY}&language=en-US&page=${CurrentPage + 1}`;
         fetchMovies(endpoint);
 
     }
@@ -71,7 +85,7 @@ function LandingPage() {
 
             <div style={{ width: '85%', margin: '1rem auto' }}>
 
-                <Title level={2} > Movies by latest </Title>
+                <Title level={2} > Movies by {sortBy} </Title>
                 <hr />
                 <Row gutter={[16, 16]}>
                     {Movies && Movies.map((movie, index) => (
@@ -100,4 +114,4 @@ function LandingPage() {
     )
 }
 
-export default LandingPage
+export default withRouter(LandingPage)
