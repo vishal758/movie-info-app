@@ -2,33 +2,33 @@ import React, { useEffect, useState } from 'react'
 import { Row, Button } from 'antd';
 import axios from 'axios';
 
-import Comments from './Sections/Comments'
-import LikeDislikes from './Sections/LikeDislikes';
-import { API_URL, API_KEY, IMAGE_URL } from '../../Config'
-import GridCards from '../Common/GridCard';
-import MainImage from '../Common/MainImage';
-import MovieInfo from './Sections/MovieInfo';
-import Favorite from './Sections/Favourite';
-import Recommendation from '../Recommendations/Recommendation';
-function MovieDetailPage(props) {
+// import Comments from './Sections/Comments'
+// import LikeDislikes from './Sections/LikeDislikes';
+import { API_URL, API_KEY, IMAGE_URL } from '../../../Config'
+import GridCards from '../../Common/GridCard';
+import MainImage from '../../Common/MainImage';
+import TvInfo from './TvInfo';
+// import Favorite from './Sections/Favourite';
+// import Recommendation from '../Recommendations/Recommendation';
+function TvDetailPage(props) {
 
-    const movieId = props.match.params.movieId
-    const [Movie, setMovie] = useState([])
+    const serieId = props.match.params.serieId
+    const [Serie, setSerie] = useState([])
     const [Casts, setCasts] = useState([])
     const [CommentLists, setCommentLists] = useState([])
-    const [LoadingForMovie, setLoadingForMovie] = useState(true)
+    const [LoadingForSerie, setLoadingForSerie] = useState(true)
     const [LoadingForCasts, setLoadingForCasts] = useState(true)
     const [ActorToggle, setActorToggle] = useState(false)
-    const movieVariable = {
-        movieId: movieId
+    const serieVariable = {
+        serieId: serieId
     }
 
     useEffect(() => {
 
-        let endpointForMovieInfo = `${API_URL}movie/${movieId}?api_key=${API_KEY}&language=en-US`;
-        fetchDetailInfo(endpointForMovieInfo)
+        let endpointForSerieInfo = `${API_URL}tv/${serieId}?api_key=${API_KEY}&language=en-US`;
+        fetchDetailInfo(endpointForSerieInfo)
 
-        axios.post('/api/comment/getComments', movieVariable)
+        axios.post('/api/comment/getComments', serieVariable)
             .then(response => {
                 console.log(response)
                 if (response.data.success) {
@@ -51,10 +51,10 @@ function MovieDetailPage(props) {
             .then(result => result.json())
             .then(result => {
                 console.log(result)
-                setMovie(result)
-                setLoadingForMovie(false)
+                setSerie(result)
+                setLoadingForSerie(false)
 
-                let endpointForCasts = `${API_URL}movie/${movieId}/credits?api_key=${API_KEY}`;
+                let endpointForCasts = `${API_URL}tv/${serieId}/credits?api_key=${API_KEY}`;
                 fetch(endpointForCasts)
                     .then(result => result.json())
                     .then(result => {
@@ -74,11 +74,11 @@ function MovieDetailPage(props) {
 
     return (
         <div>
-            {!LoadingForMovie ?
+            {!LoadingForSerie ?
                 <MainImage
-                    image={`${IMAGE_URL}w1280${Movie.backdrop_path}`}
-                    title={Movie.original_title}
-                    text={Movie.overview}
+                    image={`${IMAGE_URL}w1280${Serie.backdrop_path}`}
+                    title={Serie.name}
+                    text={Serie.overview}
                 />
                 :
                 <div>loading...</div>
@@ -86,13 +86,13 @@ function MovieDetailPage(props) {
 
             <div style={{ width: '85%', margin: '1rem auto' }}>
 
-                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                {/* <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <Favorite movieInfo={Movie} movieId={movieId} userFrom={localStorage.getItem('userId')} />
-                </div>
+                </div> */}
 
 
-                {!LoadingForMovie ?
-                    <MovieInfo movie={Movie} />
+                {!LoadingForSerie ?
+                    <TvInfo serie={Serie} />
                     :
                     <div>loading...</div>
                 }
@@ -116,14 +116,14 @@ function MovieDetailPage(props) {
                 }
                 <br />
 
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                {/* <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <LikeDislikes movie movieId={movieId} userId={localStorage.getItem('userId')} />
-                </div>
+                </div> */}
 
                 <br />
-                    <Recommendation movieId = {movieId} />
+                    {/* <Recommendation movieId = {movieId} /> */}
                 <br />
-                <Comments movieTitle={Movie.original_title} CommentLists={CommentLists} movieId={movieId} refreshFunction={updateComment} />
+                {/* <Comments movieTitle={Movie.original_title} CommentLists={CommentLists} movieId={movieId} refreshFunction={updateComment} /> */}
 
             </div>
 
@@ -131,5 +131,5 @@ function MovieDetailPage(props) {
     )
 }
 
-export default MovieDetailPage
+export default TvDetailPage
 

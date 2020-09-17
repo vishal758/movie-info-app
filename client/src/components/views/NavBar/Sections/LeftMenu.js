@@ -20,6 +20,12 @@ function LeftMenu(props) {
 
     </SubMenu>
 
+    <SubMenu title={<span>Tv</span>}>
+      <Menu.Item key="tvPopular"><a href="/tv/sortBy/popular">Popular</a></Menu.Item>
+      <Menu.Item key="tvTop_rated"><a href="/tv/sortBy/top_rated">Top Rated</a></Menu.Item>
+      <Menu.Item key="tvAiring_today"><a href="/tv/sortBy/airing_today">Airing Today</a></Menu.Item>
+    </SubMenu>
+
     {/* <SubMenu title={<span>Blogs</span>}>
       <MenuItemGroup title="Item 1">
         <Menu.Item key="setting:1">Option 1</Menu.Item>

@@ -1,33 +1,48 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { Typography, Row } from 'antd';
 import { API_URL, API_KEY, IMAGE_URL } from '../../Config'
+import MainImage from '../Common/MainImage'
 import GridCard from '../Common/GridCard'
 import { withRouter } from 'react-router-dom';
 const { Title } = Typography;
-function Recommendation(props) {
+function TvLandingPage(props) {
     const buttonRef = useRef(null);
 
-    const [Movies, setMovies] = useState([])
+    const [Series, setSeries] = useState([])
+    const [MainSerieImage, setMainSerieImage] = useState(null)
     const [Loading, setLoading] = useState(true)
+    let [sortBy, setSortBy] = useState('top_rated')
     const [CurrentPage, setCurrentPage] = useState(0)
-    const movieId = props.movieId
+    // let sortBy = "top_rated"
+
+    const sortSerieBy = () => {
+
+        if(Object.keys(props.match.params).length !== 0) {
+            sortBy = props.match.params.type
+            setSortBy(sortBy)
+        }
+        console.log(sortBy)
+        return sortBy
+    }
 
     useEffect(() => {
-        const endpoint = `${API_URL}movie/${movieId}/recommendations?api_key=${API_KEY}&language=en-US&page=1`;
-        fetchMovies(endpoint)
+        const sortBy = sortSerieBy()
+        const endpoint = `${API_URL}tv/${sortBy}?api_key=${API_KEY}&language=en-US&page=1`;
+        fetchSeries(endpoint)
     }, [])
 
     useEffect(() => {
         window.addEventListener("scroll", handleScroll);
     }, [])
 
-    const fetchMovies = (endpoint) => {
+    const fetchSeries = (endpoint) => {
 
         fetch(endpoint)
             .then(result => result.json())
             .then(result => {
-                console.log("recommended", result)
-                setMovies([...Movies, ...result.results])
+                console.log(result)
+                setSeries([...Series, ...result.results])
+                setMainSerieImage(MainSerieImage || result.results[0])
                 setCurrentPage(result.page)
             }, setLoading(false))
             .catch(error => console.error('Error:', error)
@@ -37,9 +52,10 @@ function Recommendation(props) {
     const loadMoreItems = () => {
         let endpoint = '';
         setLoading(true)
+        const sortBy = sortSerieBy()
         console.log('CurrentPage', CurrentPage)
-        endpoint = `${API_URL}movie/${movieId}/recommendations?api_key=${API_KEY}&language=en-US&page=${CurrentPage + 1}`;
-        fetchMovies(endpoint);
+        endpoint = `${API_URL}tv/${sortBy}?api_key=${API_KEY}&language=en-US&page=${CurrentPage + 1}`;
+        fetchSeries(endpoint);
 
     }
 
@@ -60,22 +76,30 @@ function Recommendation(props) {
 
     return (
         <div style={{ width: '100%', margin: '0' }}>
+            {MainSerieImage &&
+                <MainImage
+                    image={`${IMAGE_URL}w1280${MainSerieImage.backdrop_path}`}
+                    title={MainSerieImage.original_title}
+                    text={MainSerieImage.overview}
+                />
+
+            }
 
             <div style={{ width: '85%', margin: '1rem auto' }}>
 
-                <Title level={2} > Recommended Movies </Title>
+                <Title level={2} > TV Series by {sortBy} </Title>
                 <hr />
                 <Row gutter={[16, 16]}>
-                    {Movies && Movies.map((movie, index) => (
+                    {Series && Series.map((serie, index) => (
                         <React.Fragment key={index}>
-                            {movie.poster_path && <GridCard
-                                movie
-                                image={movie.poster_path ?
-                                    `${IMAGE_URL}w500${movie.poster_path}`
+                            <GridCard
+                                serie
+                                image={serie.poster_path ?
+                                    `${IMAGE_URL}w500${serie.poster_path}`
                                     : null}
-                                movieId={movie.id}
-                                movieName={movie.original_title}
-                            />}
+                                serieId={serie.id}
+                                serieName={serie.original_title}
+                            />
                         </React.Fragment>
                     ))}
                 </Row>
@@ -93,4 +117,4 @@ function Recommendation(props) {
     )
 }
 
-export default withRouter(Recommendation)
+export default withRouter(TvLandingPage)

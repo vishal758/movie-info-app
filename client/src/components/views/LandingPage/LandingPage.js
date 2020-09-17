@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { Typography, Row } from 'antd';
 import { API_URL, API_KEY, IMAGE_URL } from '../../Config'
-import MainImage from './Sections/MainImage'
-import GridCard from '../../views/LandingPage/Sections/GridCard'
+import MainImage from '../Common/MainImage'
+import GridCard from '../Common/GridCard'
 import { withRouter } from 'react-router-dom';
 const { Title } = Typography;
 function LandingPage(props) {
@@ -11,13 +11,15 @@ function LandingPage(props) {
     const [Movies, setMovies] = useState([])
     const [MainMovieImage, setMainMovieImage] = useState(null)
     const [Loading, setLoading] = useState(true)
+    let [sortBy, setSortBy] = useState('top_rated')
     const [CurrentPage, setCurrentPage] = useState(0)
-    let sortBy = "top_rated"
+    // let sortBy = "top_rated"
 
     const sortMovieBy = () => {
 
         if(Object.keys(props.match.params).length !== 0) {
             sortBy = props.match.params.type
+            setSortBy(sortBy)
         }
         return sortBy
     }
@@ -89,6 +91,7 @@ function LandingPage(props) {
                     {Movies && Movies.map((movie, index) => (
                         <React.Fragment key={index}>
                             <GridCard
+                                movie
                                 image={movie.poster_path ?
                                     `${IMAGE_URL}w500${movie.poster_path}`
                                     : null}
