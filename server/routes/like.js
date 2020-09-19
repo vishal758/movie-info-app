@@ -10,6 +10,8 @@ router.post("/getLikes", (req, res) => {
     let variable = {}
     if (req.body.movieId) {
         variable = { movieId: req.body.movieId }
+    } else if (req.body.serieId) {
+        variable = { serieId: req.body.serieId}
     } else {
         variable = { commentId: req.body.commentId }
     }
@@ -26,6 +28,8 @@ router.post("/getDislikes", (req, res) => {
     let variable = {}
     if (req.body.movieId) {
         variable = { movieId: req.body.movieId }
+    } else if (req.body.serieId) {
+        variable = { serieId: req.body.serieId}
     } else {
         variable = { commentId: req.body.commentId }
     }
@@ -44,6 +48,8 @@ router.post("/upLike", (req, res) => {
     let variable = {}
     if (req.body.movieId) {
         variable = { movieId: req.body.movieId, userId: req.body.userId }
+    } else if (req.body.serieId) {
+        variable  = { serieId: req.body.serieId, userId: req.body.userId }
     } else {
         variable = { commentId: req.body.commentId , userId: req.body.userId }
     }
@@ -64,6 +70,8 @@ router.post("/unLike", (req, res) => {
     let variable = {}
     if (req.body.movieId) {
         variable = { movieId: req.body.movieId, userId: req.body.userId }
+    } else if (req.body.serieId) {
+        variable  = { serieId: req.body.serieId, userId: req.body.userId }
     } else {
         variable = { commentId: req.body.commentId , userId: req.body.userId }
     }
@@ -81,6 +89,8 @@ router.post("/unDisLike", (req, res) => {
     let variable = {}
     if (req.body.movieId) {
         variable = { movieId: req.body.movieId, userId: req.body.userId }
+    } else if (req.body.serieId) {
+        variable  = { serieId: req.body.serieId, userId: req.body.userId }
     } else {
         variable = { commentId: req.body.commentId , userId: req.body.userId }
     }
@@ -97,6 +107,8 @@ router.post("/upDisLike", (req, res) => {
     let variable = {}
     if (req.body.movieId) {
         variable = { movieId: req.body.movieId, userId: req.body.userId }
+    } else if (req.body.serieId) {
+        variable  = { serieId: req.body.serieId, userId: req.body.userId }
     } else {
         variable = { commentId: req.body.commentId , userId: req.body.userId }
     }

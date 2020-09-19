@@ -3,12 +3,12 @@ import { Row, Button } from 'antd';
 import axios from 'axios';
 
 import Comments from './Sections/Comments'
-import LikeDislikes from './Sections/LikeDislikes';
+import LikeDislikes from '../Common/LikeDislikes';
 import { API_URL, API_KEY, IMAGE_URL } from '../../Config'
 import GridCards from '../Common/GridCard';
 import MainImage from '../Common/MainImage';
 import MovieInfo from './Sections/MovieInfo';
-import Favorite from './Sections/Favourite';
+import Favorite from '../Common/Favourite';
 import Recommendation from '../Recommendations/Recommendation';
 function MovieDetailPage(props) {
 
@@ -39,7 +39,7 @@ function MovieDetailPage(props) {
                 }
             })
 
-    }, [])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     const toggleActorView = () => {
         setActorToggle(!ActorToggle)
@@ -87,7 +87,7 @@ function MovieDetailPage(props) {
             <div style={{ width: '85%', margin: '1rem auto' }}>
 
                 <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    <Favorite movieInfo={Movie} movieId={movieId} userFrom={localStorage.getItem('userId')} />
+                    <Favorite movie movieInfo={Movie} movieId={movieId} userFrom={localStorage.getItem('userId')} />
                 </div>
 
 
@@ -121,7 +121,7 @@ function MovieDetailPage(props) {
                 </div>
 
                 <br />
-                    <Recommendation movieId = {movieId} />
+                    <Recommendation movie movieId = {movieId} />
                 <br />
                 <Comments movieTitle={Movie.original_title} CommentLists={CommentLists} movieId={movieId} refreshFunction={updateComment} />
 

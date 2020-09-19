@@ -13,6 +13,9 @@ const likeSchema = mongoose.Schema({
    },
    movieId: {
        type: String,
+   },
+   serieId: {
+       type: String
    }
 
 }, { timestamps: true })

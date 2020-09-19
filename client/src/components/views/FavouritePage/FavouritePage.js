@@ -7,18 +7,27 @@ import { IMAGE_URL } from '../../Config'
 
 function FavouritePage() {
 
-    const variable = {
-        userFrom: localStorage.getItem('userId')
+    const variableMovie = {
+        userFrom: localStorage.getItem('userId'),
+        movie: true
+    }
+
+    const variableSerie = {
+        userFrom: localStorage.getItem('userId'),
+        serie: true
     }
     const [FavouriteMovies, setFavouriteMovies] = useState([])
+    const [FavouriteSeries, setFavouriteSeries] = useState([])
     useEffect(() => {
         fetchFavouritedMovies()
+        fetchFavouritedSeries()
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     const fetchFavouritedMovies = () => {
-        axios.post('api/favourite/getFavouritedMovie', variable)
+        axios.post('api/favourite/getFavouritedMovie', variableMovie)
             .then(response => {
                 if(response.data.success) {
+                    console.log("favmovies", response.data.favourites)
                     setFavouriteMovies(response.data.favourites)
                 } else {
                     alert('Failed to get Favourite Movies.')
@@ -26,23 +35,45 @@ function FavouritePage() {
             })
     }
 
-    const onClickRemove = (movieId) => {
+    const fetchFavouritedSeries = () => {
+        axios.post('api/favourite/getFavouritedMovie', variableSerie)
+            .then(response => {
+                if(response.data.success) {
+                    console.log("favseries", response.data.favourites)
 
-        const variable = {
-            movieId: movieId,
-            userFrom: localStorage.getItem('userId')
+                    setFavouriteSeries(response.data.favourites)
+                } else {
+                    alert('Failed to get Favourite Series.')
+                }
+            })
+    }
+
+    const onClickRemove = (value, type) => {
+
+        let variable = null
+        if(type === 'movie') {
+            variable = {
+                movieId: value,
+                userFrom: localStorage.getItem('userId')
+            }
+        } else if (type === 'serie') {
+            variable = {
+                serieId: value,
+                userFrom: localStorage.getItem('userId')
+            }
         }
         axios.post('/api/favourite/removeFromFavourite', variable)
                 .then(response => {
                     if(response.data.success) {
                         fetchFavouritedMovies()
+                        fetchFavouritedSeries()
                     } else {
                         alert('Failed to remove from Favourites')
                     }
                 })
     }
 
-    let renderTableBody = FavouriteMovies.map((movie, index) => {
+    let renderTableBodyMovies = FavouriteMovies.map((movie, index) => {
         const content = (
             <div>
                 {movie.movieImage ? 
@@ -56,9 +87,28 @@ function FavouritePage() {
                 <td>{movie.movieTitle}</td>
             </Popover>
             <td>{movie.movieRunTime}</td>
-            <td><button onClick={() => onClickRemove(movie.movieId)}>Remove</button></td>
+            <td><button onClick={() => onClickRemove(movie.movieId, 'movie')}>Remove</button></td>
         </tr>
     })
+
+    let renderTableBodySeries = FavouriteSeries.map((serie, index) => {
+        const content = (
+            <div>
+                {serie.serieImage ? 
+                    <img src={`${IMAGE_URL}w500${serie.serieImage}`} alt="serieImage" /> 
+                    : null
+                }
+            </div>
+        )
+        return <tr>
+            <Popover content={content} title={`${serie.serieTitle}`}>
+                <td>{serie.serieTitle}</td>
+            </Popover>
+            {/* <td>{serie.serieRunTime}</td> */}
+            <td><button onClick={() => onClickRemove(serie.serieId, 'serie')}>Remove</button></td>
+        </tr>
+    })
+
     return (
         <div style={{width: '85%', margin: '3rem auto'}}>
             <h3>Favourite Movies By Me</h3>
@@ -72,7 +122,23 @@ function FavouritePage() {
                     </tr>
                 </thead>
                 <tbody>
-                    {renderTableBody}
+                    {renderTableBodyMovies}
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <h3>Favourite Series By Me</h3>
+            <hr />
+            <table>
+                <thead>
+                    <tr>
+                        <th>TV Title</th>
+                        {/* <th>TV Runtime</th> */}
+                        <th>Remove From Favourite</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {renderTableBodySeries}
                 </tbody>
             </table>
         </div>

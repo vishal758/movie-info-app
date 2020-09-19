@@ -6,13 +6,26 @@ function Favourite(props) {
 
     const [FavouriteNumber, setFavouriteNumber] = useState(0)
     const [Favourited, setFavourited] = useState(false)
-    const variable = {
-        userFrom: props.userFrom,
-        movieId: props.movieId,
-        movieTitle: props.movieInfo.original_title,
-        movieImage: props.movieInfo.backdrop_path,
-        movieRunTime: props.movieInfo.runtime
+    let variable = null
+    if(props.movie) {
+        variable = {
+            userFrom: props.userFrom,
+            movieId: props.movieId,
+            movieTitle: props.movieInfo.original_title,
+            movieImage: props.movieInfo.backdrop_path,
+            movieRunTime: props.movieInfo.runtime
+        }
+    } else if (props.serie) {
+        console.log(props.serieInfo)
+        variable = {
+            userFrom: props.userFrom,
+            serieId: props.serieId,
+            serieTitle: props.serieInfo.original_name,
+            serieImage: props.serieInfo.backdrop_path,
+            // serieRunTime: props.serieInfo.episode_run_time
+        }
     }
+
 
     useEffect(() => {
         

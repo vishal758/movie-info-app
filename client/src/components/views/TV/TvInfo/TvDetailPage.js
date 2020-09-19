@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { Row, Button } from 'antd';
 import axios from 'axios';
 
-// import Comments from './Sections/Comments'
-// import LikeDislikes from './Sections/LikeDislikes';
+import Comments from '../../MovieDetailPage/Sections/Comments'
+import LikeDislikes from '../../Common/LikeDislikes';
 import { API_URL, API_KEY, IMAGE_URL } from '../../../Config'
 import GridCards from '../../Common/GridCard';
 import MainImage from '../../Common/MainImage';
 import TvInfo from './TvInfo';
-// import Favorite from './Sections/Favourite';
-// import Recommendation from '../Recommendations/Recommendation';
+import Favorite from '../../Common/Favourite';
+import Recommendation from '../../Recommendations/Recommendation';
 function TvDetailPage(props) {
 
     const serieId = props.match.params.serieId
@@ -20,7 +20,7 @@ function TvDetailPage(props) {
     const [LoadingForCasts, setLoadingForCasts] = useState(true)
     const [ActorToggle, setActorToggle] = useState(false)
     const serieVariable = {
-        serieId: serieId
+        movieId: serieId
     }
 
     useEffect(() => {
@@ -39,7 +39,7 @@ function TvDetailPage(props) {
                 }
             })
 
-    }, [])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     const toggleActorView = () => {
         setActorToggle(!ActorToggle)
@@ -86,9 +86,9 @@ function TvDetailPage(props) {
 
             <div style={{ width: '85%', margin: '1rem auto' }}>
 
-                {/* <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                    <Favorite movieInfo={Movie} movieId={movieId} userFrom={localStorage.getItem('userId')} />
-                </div> */}
+                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                    <Favorite serie serieInfo={Serie} serieId={serieId} userFrom={localStorage.getItem('userId')} />
+                </div>
 
 
                 {!LoadingForSerie ?
@@ -116,14 +116,14 @@ function TvDetailPage(props) {
                 }
                 <br />
 
-                {/* <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <LikeDislikes movie movieId={movieId} userId={localStorage.getItem('userId')} />
-                </div> */}
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <LikeDislikes serie serieId={serieId} userId={localStorage.getItem('userId')} />
+                </div>
 
                 <br />
-                    {/* <Recommendation movieId = {movieId} /> */}
+                    <Recommendation serie serieId = {serieId} />
                 <br />
-                {/* <Comments movieTitle={Movie.original_title} CommentLists={CommentLists} movieId={movieId} refreshFunction={updateComment} /> */}
+                <Comments movieTitle={Serie.original_name} CommentLists={CommentLists} movieId={serieId} refreshFunction={updateComment} />
 
             </div>
 

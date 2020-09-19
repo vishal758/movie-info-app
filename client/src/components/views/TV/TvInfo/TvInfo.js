@@ -1,15 +1,14 @@
 import React from 'react'
-import { Descriptions, Badge } from 'antd';
+import { Descriptions } from 'antd';
 
 function TvInfo(props) {
 
     const { serie } = props;
     
     return (
-        <Descriptions title="serie Info" bordered>
+        <Descriptions title="Serie Information" bordered>
         <Descriptions.Item label="Title">{serie.original_name}</Descriptions.Item>
         <Descriptions.Item label="release_date">{serie.first_air_date}</Descriptions.Item>
-        {/* <Descriptions.Item label="revenue">{serie.revenue}</Descriptions.Item> */}
         <Descriptions.Item label="runtime">{serie.episode_run_time}</Descriptions.Item>
         <Descriptions.Item label="vote_average" span={2}>
         {serie.vote_average}

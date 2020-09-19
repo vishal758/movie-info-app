@@ -29,11 +29,11 @@ function TvLandingPage(props) {
         const sortBy = sortSerieBy()
         const endpoint = `${API_URL}tv/${sortBy}?api_key=${API_KEY}&language=en-US&page=1`;
         fetchSeries(endpoint)
-    }, [])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         window.addEventListener("scroll", handleScroll);
-    }, [])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     const fetchSeries = (endpoint) => {
 

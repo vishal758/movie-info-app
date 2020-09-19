@@ -10,8 +10,14 @@ const { auth } = require("../middleware/auth");
 
 
 router.post("/favouriteNumber", auth, (req, res) => {
-    
-    Favourite.find({"movieId": req.body.movieId})
+    let variable = {}
+    if (req.body.movieId) {
+        variable = {movieId: req.body.movieId}
+    } else if (req.body.serieId) {
+        variable = {serieId: req.body.serieId}
+    }
+    // Favourite.find({"movieId": req.body.movieId})
+    Favourite.find(variable)
         .exec((err, favourite) => {
             if(err) {
                 return res.status(400).send(err)
@@ -21,7 +27,14 @@ router.post("/favouriteNumber", auth, (req, res) => {
 });
 
 router.post("/favourited", auth, (req, res) => {
-    Favourite.find({"movieId": req.body.movieId, "userFrom": req.body.userFrom })
+    let variable = {}
+    if (req.body.movieId) {
+        variable = {movieId: req.body.movieId, userFrom: req.body.userFrom }
+    } else if (req.body.serieId) {
+        variable = {serieId: req.body.serieId, userFrom: req.body.userFrom }
+    }
+    // Favourite.find({"movieId": req.body.movieId, "userFrom": req.body.userFrom })
+    Favourite.find(variable)
         .exec((err, favourite) => {
             if(err) return res.status(400).send(err)
             
@@ -44,7 +57,15 @@ router.post("/addToFavourite", auth, (req, res) => {
 
 router.post("/removeFromFavourite", auth, (req, res) => {
 
-    Favourite.findOneAndDelete({"movieId": req.body.movieId, "userFrom": req.body.userFrom})
+    let variable = {}
+    if (req.body.movieId) {
+        variable = {movieId: req.body.movieId, userFrom: req.body.userFrom }
+    } else if (req.body.serieId) {
+        variable = {serieId: req.body.serieId, userFrom: req.body.userFrom }
+    }
+
+    // Favourite.findOneAndDelete({"movieId": req.body.movieId, "userFrom": req.body.userFrom})
+    Favourite.findOneAndDelete(variable)
     .exec((err, doc) => {
         if(err) res.status(400).json({success: false, err})
         return res.status(200).json({success: true, doc})
@@ -52,8 +73,19 @@ router.post("/removeFromFavourite", auth, (req, res) => {
 });
 
 router.post("/getFavouritedMovie", auth, (req, res) => {
-
-    Favourite.find({"userFrom": req.body.userFrom})
+    let variable = {}
+    if(req.body.movie) {
+        variable = {'movieId': {$ne: null}, userFrom: req.body.userFrom}
+    } else if (req.body.serie) {
+        variable = {'serieId': {$ne: null}, userFrom: req.body.userFrom}
+    }
+    // if(req.body.movie) {
+    //     variable = 'movieId'
+    // } else if(req.body.serie) {
+    //     variable = 'serieId'
+    // }
+    // Favourite.find({"userFrom": req.body.userFrom, variable: {$ne: null}})
+    Favourite.find(variable)
     .exec((err, favourites) => {
         if(err) res.status(400).json({success: false, err})
         return res.status(200).json({success: true, favourites})

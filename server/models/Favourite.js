@@ -17,6 +17,18 @@ const favouriteSchema = mongoose.Schema({
     },
     movieRunTime: {
         type: String
+    },
+    serieId: {
+        type: String
+    },
+    serieTitle: {
+        type: String
+    },
+    serieImage: {
+        type: String
+    },
+    serieRunTime: {
+        type: String
     }
 })
 

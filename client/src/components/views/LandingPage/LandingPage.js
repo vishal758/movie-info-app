@@ -28,11 +28,11 @@ function LandingPage(props) {
         const sortBy = sortMovieBy()
         const endpoint = `${API_URL}movie/${sortBy}?api_key=${API_KEY}&language=en-US&page=1`;
         fetchMovies(endpoint)
-    }, [])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         window.addEventListener("scroll", handleScroll);
-    }, [])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     const fetchMovies = (endpoint) => {
 

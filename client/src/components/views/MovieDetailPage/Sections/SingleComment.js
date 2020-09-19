@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Comment, Avatar, Button, Input } from 'antd';
 import Axios from 'axios';
 import { useSelector } from 'react-redux';
-import LikeDislikes from './LikeDislikes';
+import LikeDislikes from '../../Common/LikeDislikes';
 const { TextArea } = Input;
 
 function SingleComment(props) {

@@ -14,6 +14,8 @@ function LikeDislikes(props) {
 
     if (props.movie) {
         variable = { movieId: props.movieId, userId: props.userId }
+    } else if (props.serie) {
+        variable = { serieId: props.serieId, userId: props.userId}
     } else {
         variable = { commentId: props.commentId, userId: props.userId }
     }
