@@ -5,7 +5,7 @@ import {Popover} from 'antd'
 import { IMAGE_URL } from '../../Config'
 
 
-function FavouritePage() {
+function FavouritePage(props) {
 
     const variableMovie = {
         userFrom: localStorage.getItem('userId'),
@@ -72,6 +72,13 @@ function FavouritePage() {
                     }
                 })
     }
+    const redirectToMovies = (movieId) => {
+        props.history.push('/movie/' + movieId)
+    }
+
+    const redirectToSeries = (serieId) => {
+        props.history.push('/tv/' + serieId)
+    }
 
     let renderTableBodyMovies = FavouriteMovies.map((movie, index) => {
         const content = (
@@ -84,7 +91,7 @@ function FavouritePage() {
         )
         return <tr>
             <Popover content={content} title={`${movie.movieTitle}`}>
-                <td>{movie.movieTitle}</td>
+                <td style={{cursor: 'pointer'}} onClick={() => redirectToMovies(movie.movieId)}>{movie.movieTitle}</td>
             </Popover>
             <td>{movie.movieRunTime}</td>
             <td><button onClick={() => onClickRemove(movie.movieId, 'movie')}>Remove</button></td>
@@ -102,7 +109,7 @@ function FavouritePage() {
         )
         return <tr>
             <Popover content={content} title={`${serie.serieTitle}`}>
-                <td>{serie.serieTitle}</td>
+                <td style={{cursor: 'pointer'}} onClick={() => redirectToSeries(serie.serieId)}>{serie.serieTitle}</td>
             </Popover>
             {/* <td>{serie.serieRunTime}</td> */}
             <td><button onClick={() => onClickRemove(serie.serieId, 'serie')}>Remove</button></td>

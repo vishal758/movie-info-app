@@ -74,7 +74,8 @@ function Recommendation(props) {
 
             // loadMoreItems()
             console.log('clicked')
-            buttonRef.current.click();
+            if(buttonRef.current !== null)
+                buttonRef.current.click();
 
         }
     }
