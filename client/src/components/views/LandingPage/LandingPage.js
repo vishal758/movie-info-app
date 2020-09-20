@@ -4,7 +4,12 @@ import { API_URL, API_KEY, IMAGE_URL } from '../../Config'
 import MainImage from '../Common/MainImage'
 import GridCard from '../Common/GridCard'
 import { withRouter } from 'react-router-dom';
+import { Input, Button } from 'antd';
+
 const { Title } = Typography;
+const { Search } = Input;
+
+
 function LandingPage(props) {
     const buttonRef = useRef(null);
 
@@ -13,6 +18,7 @@ function LandingPage(props) {
     const [Loading, setLoading] = useState(true)
     let [sortBy, setSortBy] = useState('top_rated')
     const [CurrentPage, setCurrentPage] = useState(0)
+    const [filterValue, setFilterValue] = useState(null)
     // let sortBy = "top_rated"
 
     const sortMovieBy = () => {
@@ -25,8 +31,12 @@ function LandingPage(props) {
     }
 
     useEffect(() => {
+        let endpoint = null
         const sortBy = sortMovieBy()
-        const endpoint = `${API_URL}movie/${sortBy}?api_key=${API_KEY}&language=en-US&page=1`;
+        if(filterValue === null)
+            endpoint = `${API_URL}movie/${sortBy}?api_key=${API_KEY}&language=en-US&page=1`
+        else 
+            endpoint = `${API_URL}search/movie?api_key=${API_KEY}&query=${filterValue}&language=en-US&page=1`
         fetchMovies(endpoint)
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -39,6 +49,7 @@ function LandingPage(props) {
         fetch(endpoint)
             .then(result => result.json())
             .then(result => {
+                console.log('searchMovie', result)
                 setMovies([...Movies, ...result.results])
                 setMainMovieImage(MainMovieImage || result.results[0])
                 setCurrentPage(result.page)
@@ -52,8 +63,11 @@ function LandingPage(props) {
         setLoading(true)
         const sortBy = sortMovieBy()
         console.log('CurrentPage', CurrentPage)
-        endpoint = `${API_URL}movie/${sortBy}?api_key=${API_KEY}&language=en-US&page=${CurrentPage + 1}`;
-        fetchMovies(endpoint);
+        if(filterValue === null)
+            endpoint = `${API_URL}movie/${sortBy}?api_key=${API_KEY}&language=en-US&page=${CurrentPage + 1}`;
+        else 
+            endpoint = `${API_URL}search/movie?api_key=${API_KEY}&query=${filterValue}&language=en-US&page=${CurrentPage + 1}`
+            fetchMovies(endpoint);
 
     }
 
@@ -72,8 +86,49 @@ function LandingPage(props) {
         }
     }
 
+    const resetFetchMovies = () => {
+        setMovies([])
+        setMainMovieImage(null)
+        setFilterValue(null)
+        const sortBy = sortMovieBy()
+        const endpoint = `${API_URL}movie/${sortBy}?api_key=${API_KEY}&language=en-US&page=1`;
+        fetchMovies(endpoint)
+    }
+
+    const fetchFilterMovieList = (value) => {
+        setMovies([])
+        setMainMovieImage(null)
+        setFilterValue(value)
+        console.log('movies',Movies)
+        const endpoint = `${API_URL}search/movie?api_key=${API_KEY}&query=${value}&language=en-US&page=1`
+        console.log('filter result endpoint', endpoint)
+        fetchMovies(endpoint)
+        console.log(value)
+    }
+
     return (
+
         <div style={{ width: '100%', margin: '0' }}>
+            
+            <br />
+            <div style={{width: '85%', margin: '1rem auto', display: 'flex', flexDirection: 'column' }}>
+                <Search
+                    placeholder="Search Movie"
+                    enterButton="Search"
+                    size="middle"
+                    onSearch={value => fetchFilterMovieList(value)}
+                /> 
+                <br />  
+                <Button 
+                    style={{width: '30%', margin: '0 auto', justifyContent: 'center', alignItems: 'center'}} 
+                    type="primary"
+                    onClick={resetFetchMovies}>
+                    Clear Filter
+                </Button>           
+            </div>
+            
+            <br />
+
             {MainMovieImage &&
                 <MainImage
                     image={`${IMAGE_URL}w1280${MainMovieImage.backdrop_path}`}
