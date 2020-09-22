@@ -11,8 +11,11 @@ function TvLandingPage(props) {
     const [Series, setSeries] = useState([])
     const [MainSerieImage, setMainSerieImage] = useState(null)
     const [Loading, setLoading] = useState(true)
-    let [sortBy, setSortBy] = useState('top_rated')
+    let [sortBy, setSortBy] = useState('popular')
     const [CurrentPage, setCurrentPage] = useState(0)
+
+    const [filterValue, setFilterValue] = useState(null)
+    const [isClickedReset, setIsClickedReset] = useState(false)
     // let sortBy = "top_rated"
 
     const sortSerieBy = () => {
@@ -72,6 +75,25 @@ function TvLandingPage(props) {
             buttonRef.current.click();
 
         }
+    }
+
+    const resetFetchMovies = () => {
+        setSeries([])
+        setMainSerieImage(null)
+        setFilterValue(null)
+        setIsClickedReset(!isClickedReset)
+        const sortBy = sortSerieBy()
+        const endpoint = `${API_URL}tv/${sortBy}?api_key=${API_KEY}&language=en-US&page=1`;
+        fetchSeries(endpoint)
+    }
+
+    const fetchFilterMovieList = (value) => {
+        setSeries([])
+        setMainSerieImage(null)
+        setFilterValue(value)
+        const sortBy = sortSerieBy()
+        const endpoint = `${API_URL}tv/${sortBy}?api_key=${API_KEY}&language=en-US&page=1`;
+        fetchSeries(endpoint)
     }
 
     return (
