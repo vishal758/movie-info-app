@@ -130,7 +130,7 @@ function SearchSpecific(props) {
 
     let RenderSearch = null
 
-    if(filterValue !== null) {
+    if(filterValue !== null && filterValue !== '') {
         RenderSearch = <Redirect to={{
                                 pathname: "/search",
                                 state: {searchValue: value, type: type}
@@ -138,7 +138,13 @@ function SearchSpecific(props) {
                         />
     } else {
         if(IsResetClicked)
-            RenderSearch = <Redirect to="/" />
+            {
+                if(type === 'movie')
+                    RenderSearch = <Redirect to="/" />
+                else 
+                RenderSearch = <Redirect to="/tv/sortBy/popular" />
+
+            }
     }
 
     return (
@@ -149,6 +155,7 @@ function SearchSpecific(props) {
             <br />
             <div style={{width: '85%', margin: '1rem auto', display: 'flex', flexDirection: 'column' }}>
                 <Search
+                    disabled = {value === '' && value === null}
                     placeholder="Search Movie"
                     enterButton="Search"
                     size="defualt"
@@ -169,12 +176,11 @@ function SearchSpecific(props) {
             {MainMovieImage &&
                 <MainImage
                     image={`${IMAGE_URL}w1280${MainMovieImage.backdrop_path}`}
-                    title={MainMovieImage.original_title}
+                    title={type === 'movie' ? MainMovieImage.original_title : MainMovieImage.original_name}
                     text={MainMovieImage.overview}
                 />
 
             }
-
 
             <div style={{ width: '85%', margin: '1rem auto' }}>
 
