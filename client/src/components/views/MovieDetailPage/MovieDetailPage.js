@@ -38,7 +38,20 @@ function MovieDetailPage(props) {
                     alert('Failed to get comments Info')
                 }
             })
-
+        
+        // let endPoint = `${API_URL}movie/${movieId}/reviews?api_key=${API_KEY}&query=spider&language=en-US`
+        // fetch(endPoint)
+        //     .then(response => response.json())
+        //     .then(response => {
+        //         console.log("reviews", response)
+        //     })
+        
+        let endPoint1 = `${API_URL}search/movie?api_key=${API_KEY}&query=spider&language=en-US`
+        fetch(endPoint1)
+            .then(response => response.json())
+            .then(response => {
+                console.log("lists", response)
+            })
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     const toggleActorView = () => {

@@ -10,6 +10,7 @@ import MovieDetailPage from './views/MovieDetailPage/MovieDetailPage'
 import FavouritePage from './views/FavouritePage/FavouritePage'
 import TvLandingPage from './views/TV/TvLandingPage'
 import TvDetailPage from './views/TV/TvInfo/TvDetailPage'
+import Search from './views/SpecificSearch/SpecificSearch';
 
 //null   Anyone Can go inside
 //true   only logged in user can go inside
@@ -29,7 +30,7 @@ function App() {
           {/* <Route exact path="/movie/:movieId/recommendations" component={Auth(MovieDetailPage, null)} /> */}
           <Route exact path="/movie/:movieId" component={Auth(MovieDetailPage, null)} />
           <Route exact path="/tv/:serieId" component={Auth(TvDetailPage, null)} />
-
+          <Route exact path="/search" component={Auth(Search, null)} />
           <Route exact path="/favourite" component={Auth(FavouritePage, true)} />
         </Switch>
       </div>
