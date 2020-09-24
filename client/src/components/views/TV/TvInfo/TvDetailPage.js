@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Row, Button } from 'antd';
+import { Row, Button, Typography } from 'antd';
 import axios from 'axios';
 
 import Comments from '../../MovieDetailPage/Sections/Comments'
@@ -10,6 +10,11 @@ import MainImage from '../../Common/MainImage';
 import TvInfo from './TvInfo';
 import Favorite from '../../Common/Favourite';
 import Recommendation from '../../Recommendations/Recommendation';
+import { Collapse } from 'antd';
+
+const { Panel } = Collapse;
+const { Title } = Typography;
+
 function TvDetailPage(props) {
 
     const serieId = props.match.params.serieId
@@ -19,6 +24,8 @@ function TvDetailPage(props) {
     const [LoadingForSerie, setLoadingForSerie] = useState(true)
     const [LoadingForCasts, setLoadingForCasts] = useState(true)
     const [ActorToggle, setActorToggle] = useState(false)
+    const [SerieReviews, setSerieReviews] = useState([])
+
     const serieVariable = {
         movieId: serieId
     }
@@ -61,6 +68,14 @@ function TvDetailPage(props) {
                         console.log(result)
                         setCasts(result.cast)
                     })
+                
+                let endPointForReviews = `${API_URL}tv/${serieId}/reviews?api_key=${API_KEY}&language=en-US`
+                fetch(endPointForReviews)
+                    .then(result => result.json())
+                    .then(result => {
+                        console.log("reviews", result)
+                        setSerieReviews(result.results)
+                    })
 
                 setLoadingForCasts(false)
             })
@@ -70,6 +85,23 @@ function TvDetailPage(props) {
 
     const updateComment = (newComment) => {
         setCommentLists(CommentLists.concat(newComment))
+    }
+
+    let reviews = null
+    if(SerieReviews) {
+        let newSerieReviews = [...SerieReviews]
+        if(SerieReviews.length > 5) {
+            newSerieReviews = newSerieReviews.slice(0,5)
+        }
+        reviews = newSerieReviews.map((review, index) => {
+            return (
+                <Panel key = {index}
+                        header = {review.author}
+                    >
+                    <p>{review.content}</p>
+                </Panel>
+            )
+        })
     }
 
     return (
@@ -119,6 +151,14 @@ function TvDetailPage(props) {
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <LikeDislikes serie serieId={serieId} userId={localStorage.getItem('userId')} />
                 </div>
+
+                <br />
+                <Title level={2} > Reviews </Title>
+                <hr />
+
+                {SerieReviews && <Collapse accordion>
+                    {reviews}
+                </Collapse>}
 
                 <br />
                     <Recommendation serie serieId = {serieId} />

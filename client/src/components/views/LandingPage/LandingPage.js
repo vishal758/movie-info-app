@@ -16,7 +16,7 @@ function LandingPage(props) {
     const [Movies, setMovies] = useState([])
     const [MainMovieImage, setMainMovieImage] = useState(null)
     const [Loading, setLoading] = useState(true)
-    let [sortBy, setSortBy] = useState('top_rated')
+    let [sortBy, setSortBy] = useState('popular')
     const [CurrentPage, setCurrentPage] = useState(0)
     const [filterValue, setFilterValue] = useState(null)
     const [isClickedReset, setIsClickedReset] = useState(false)
@@ -108,7 +108,7 @@ function LandingPage(props) {
                             }}
                         />
     } else if(filterValue === '') {
-        RenderSearch = <Redirect to = "/" />
+        // RenderSearch = <Redirect to = "/" />
     }
 
     return (

@@ -184,7 +184,7 @@ function SearchSpecific(props) {
 
             <div style={{ width: '85%', margin: '1rem auto' }}>
 
-                <Title level={2} > {type == 'movie' ? 'Movies' : 'TV Shows'} </Title>
+                <Title level={2} > {type === 'movie' ? 'Movies' : 'TV Shows'} </Title>
                 <hr />
                 <Row gutter={[16, 16]}>
                     {recommendedResult}

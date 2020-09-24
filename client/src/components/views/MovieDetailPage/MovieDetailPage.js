@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Row, Button } from 'antd';
+import { Row, Button, Typography } from 'antd';
 import axios from 'axios';
 
 import Comments from './Sections/Comments'
@@ -10,6 +10,11 @@ import MainImage from '../Common/MainImage';
 import MovieInfo from './Sections/MovieInfo';
 import Favorite from '../Common/Favourite';
 import Recommendation from '../Recommendations/Recommendation';
+import { Collapse } from 'antd';
+
+const { Panel } = Collapse;
+const { Title } = Typography;
+
 function MovieDetailPage(props) {
 
     const movieId = props.match.params.movieId
@@ -19,6 +24,7 @@ function MovieDetailPage(props) {
     const [LoadingForMovie, setLoadingForMovie] = useState(true)
     const [LoadingForCasts, setLoadingForCasts] = useState(true)
     const [ActorToggle, setActorToggle] = useState(false)
+    const [MovieReviews, setMovieReviews] = useState([])
     const movieVariable = {
         movieId: movieId
     }
@@ -39,19 +45,6 @@ function MovieDetailPage(props) {
                 }
             })
         
-        // let endPoint = `${API_URL}movie/${movieId}/reviews?api_key=${API_KEY}&query=spider&language=en-US`
-        // fetch(endPoint)
-        //     .then(response => response.json())
-        //     .then(response => {
-        //         console.log("reviews", response)
-        //     })
-        
-        let endPoint1 = `${API_URL}search/movie?api_key=${API_KEY}&query=spider&language=en-US`
-        fetch(endPoint1)
-            .then(response => response.json())
-            .then(response => {
-                console.log("lists", response)
-            })
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     const toggleActorView = () => {
@@ -74,6 +67,14 @@ function MovieDetailPage(props) {
                         console.log(result)
                         setCasts(result.cast)
                     })
+                    
+                let endPointForReviews = `${API_URL}movie/${movieId}/reviews?api_key=${API_KEY}&language=en-US`
+                fetch(endPointForReviews)
+                    .then(result => result.json())
+                    .then(result => {
+                        console.log("reviews", result)
+                        setMovieReviews(result.results)
+                    })
 
                 setLoadingForCasts(false)
             })
@@ -83,6 +84,24 @@ function MovieDetailPage(props) {
 
     const updateComment = (newComment) => {
         setCommentLists(CommentLists.concat(newComment))
+    }
+
+
+    let reviews = null
+    if(MovieReviews) {
+        let newMovieReviews = [...MovieReviews]
+        if(MovieReviews.length > 5) {
+            newMovieReviews = newMovieReviews.slice(0,5)
+        }
+        reviews = newMovieReviews.map((review, index) => {
+            return (
+                <Panel key = {index}
+                        header = {review.author}
+                    >
+                    <p>{review.content}</p>
+                </Panel>
+            )
+        })
     }
 
     return (
@@ -133,6 +152,14 @@ function MovieDetailPage(props) {
                     <LikeDislikes movie movieId={movieId} userId={localStorage.getItem('userId')} />
                 </div>
 
+                <br />
+                <Title level={2} > Reviews </Title>
+                <hr />
+
+                {MovieReviews && 
+                <Collapse accordion>
+                    {reviews}
+                </Collapse>}
                 <br />
                     <Recommendation movie movieId = {movieId} />
                 <br />
