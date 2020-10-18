@@ -41,7 +41,7 @@ function LoginPage(props) {
             email: values.email,
             password: values.password
           };
-
+          console.log(values)
           dispatch(loginUser(dataToSubmit))
             .then(response => {
               if (response.payload.loginSuccess) {

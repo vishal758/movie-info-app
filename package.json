@@ -4,16 +4,17 @@
   "description": "react boiler plate",
   "main": "index.js",
   "engine": {
-    "node": "10.16.0",
+    "node": "12.18.4",
     "npm": "6.9.0"
   },
   "scripts": {
     "start": "node server/index.js",
     "backend": "nodemon server/index.js",
     "frontend": "npm run start --prefix client",
-    "dev": "concurrently \"npm run backend\" \"npm run start --prefix client\""
+    "dev": "concurrently \"npm run backend\" \"npm run start --prefix client\"",
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
-  "author": "John ahn",
+  "author": "vishal758",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^3.0.6",
